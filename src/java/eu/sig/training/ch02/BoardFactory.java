@@ -1,32 +1,45 @@
 package eu.sig.training.ch02;
-//test
-//hello
-public class BoardFactory {
-    // tag::createBoard[]
-    public Board createBoard(Square[][] grid) {
-        assert grid != null;
-
-        Board board = new Board(grid);
-
-        int width = board.getWidth();
-        int height = board.getHeight();
+// tag::createBoard[]
+public Board createBoard(Square[][] grid){
+    return new BoardCreator(grid).Create();
+    }
+// end::createBoard[]
+ class BoardCreator {
+    
+        private Square[][] grid;
+        private Board board;
+        private int width;
+        private int height;
+       
+        BoardCreator(Square[][] grid){
+            assert grid != null;
+            this.grid = grid;
+            this.board = new Board(grid);
+            this.width = board.getWidth();
+            this.height = board.getHeight();
+        }
+     
+        Board create() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 Square square = grid[x][y];
                 for (Direction dir : Direction.values()) {
-                    int dirX = (width + x + dir.getDeltaX()) % width;
-                    int dirY = (height + y + dir.getDeltaY()) % height;
-                    Square neighbour = grid[dirX][dirY];
-                    square.link(neighbour, dir);
+                    setLink(square, dir, x, y, width, height, grid);
                 }
             }
         }
 
-        return board;
+        return this.board;
     }
-    // end::createBoard[]
+     private void setLink(Square square, Direction dir, int x, int y, int width, int height, Square [][] grid){
+            int dirX = (width + x + dir.getDeltaX()) % width;
+            int dirY = (height + y + dir.getDeltaY()) % height;
+            Square neighbour = grid([dirX][dirY];
+            square.link(neighbour, dir);
+   }    
 }
-
+// end::createBoard[]
+  
 class Board {
     @SuppressWarnings("unused")
     public Board(Square[][] grid) {}
